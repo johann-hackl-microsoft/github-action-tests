@@ -13,7 +13,7 @@ jobs:
        with:
          creds: ${{secrets.AZURE_CREDENTIALS}}
 
-     - name: get-postgresql-user-token
+     - name: get-user-token
        uses: azure/cli@v2
        # Get PostgreSQL token for a Service Principal and store it as PGPASSWORD to be used for the actual PostgreSQL connections.
        # see https://github.com/marketplace/actions/azure-cli-action
@@ -21,7 +21,7 @@ jobs:
          inlineScript: |
            echo "PGPASSWORD=$(az account get-access-token --resource https://ossrdbms-aad.database.windows.net --query accessToken --output tsv)" >> $GITHUB_ENV
 
-     - name: execute-postgresql-scripts
+     - name: execute-scripts
        uses: azure/postgresql@v1
        # Execute scripts.
        # see https://github.com/marketplace/actions/azure-postgresql-action
