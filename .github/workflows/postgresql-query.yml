@@ -13,7 +13,7 @@ jobs:
        with:
          creds: ${{secrets.AZURE_CREDENTIALS}}
 
-     - name: get-user-token
+     - name: 'Get user token'
        uses: azure/cli@v2
        # Get PostgreSQL token for a Service Principal and store it as PGPASSWORD to be used for the actual PostgreSQL connections.
        # see https://github.com/marketplace/actions/azure-cli-action
@@ -21,7 +21,7 @@ jobs:
          inlineScript: |
            echo "PGPASSWORD=$(az account get-access-token --resource https://ossrdbms-aad.database.windows.net --query accessToken --output tsv)" >> $GITHUB_ENV
 
-     - name: execute-scripts
+     - name: 'Execute scripts'
        uses: azure/postgresql@v1
        # Execute scripts.
        # see https://github.com/marketplace/actions/azure-postgresql-action
@@ -29,9 +29,8 @@ jobs:
        # - If the required firewall rules on PostgreSQL are already in place, the Reader role is enough.
        # - Otherwise contributor role is required to dynamically allow-list the GitHub Runner IP address.
        # 
-       # Password is expected to be in environment variable PGPASSWORD, see https://www.postgresql.org/docs/current/libpq-envars.html.
        # Specify individual items instead of full connection string secret, as of https://github.com/Azure/postgresql/issues/26.
        with:
-         connection-string: "psql host=${{secrets.AZURE_POSTGRES_SERVER_NAME}} port=5432 dbname=${{secrets.AZURE_POSTGRES_DB_NAME}} user=${{secrets.AZURE_POSTGRES_USERNAME}} sslmode=require"
+         connection-string: "psql host=${{secrets.AZURE_POSTGRES_SERVER_NAME}} port=5432 dbname=${{secrets.AZURE_POSTGRES_DB_NAME}} user=${{secrets.AZURE_POSTGRES_USERNAME}} password=$PGPASSWORD sslmode=require"
          server-name: ${{secrets.AZURE_POSTGRES_SERVER_NAME}}
          plsql-file: sql_files/*.sql
