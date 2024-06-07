@@ -11,7 +11,7 @@ jobs:
        # see https://github.com/Azure/azure-resource-login-action
        with:
          creds: ${{secrets.AZURE_CREDENTIALS}}
-         resource-url: "https://management.core.windows.net/"
+         resource-url: https://ossrdbms-aad.database.windows.net
          
      - uses: azure/postgresql@v1
        # see https://github.com/marketplace/actions/azure-postgresql-action
@@ -19,4 +19,4 @@ jobs:
        with:
          connection-string: ${{ secrets.AZURE_POSTGRESQL_CONNECTION_STRING }}
          server-name: database-server
-         plsql-file: "sql_files/*.sql"
+         plsql-file: sql_files/*.sql
