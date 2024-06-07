@@ -35,3 +35,10 @@ jobs:
          connection-string: "psql host=${{secrets.AZURE_POSTGRES_SERVER_NAME}} port=5342 dbname=${{secrets.AZURE_POSTGRES_DB_NAME}} user=${{secrets.AZURE_POSTGRES_USERNAME}} password=$PGPASSWORD sslmode=require"
          server-name: ${{secrets.AZURE_POSTGRES_SERVER_NAME}}
          plsql-file: sql_files/*.sql
+
+# todo: 
+# - check https://github.com/Azure/postgresql/blob/master/src/main.ts
+# - regarding: 
+# Adding firewall rule
+# Error: The subscription 'fadec16d-faff-4e44-bfb5-b4ef55861f49' could not be found.
+# Error: Error occurred while running action:
