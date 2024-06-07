@@ -14,7 +14,6 @@ jobs:
        with:
          allow-no-subscriptions: true
          creds: ${{secrets.AZURE_CREDENTIALS}}
-         resource-url: https://ossrdbms-aad.database.windows.net
 
      - name: get-postgresql-user-token
        uses: azure/cli@v2
@@ -27,9 +26,8 @@ jobs:
 
      - name: execute-postgresql-scripts
        uses: azure/postgresql@v1
-       # Execute scripts
+       # Execute scripts, whereby server-name only contains a label, but actual connection without password is stored in secret for connection string.
        # see https://github.com/marketplace/actions/azure-postgresql-action
-       # server-name only contains a label, but actual connection is stored in secret for connection string
        with:
          connection-string: ${{ secrets.AZURE_POSTGRESQL_CONNECTION_STRING }}
          server-name: database-server
