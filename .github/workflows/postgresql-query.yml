@@ -25,10 +25,13 @@ jobs:
        uses: azure/postgresql@v1
        # Execute scripts.
        # see https://github.com/marketplace/actions/azure-postgresql-action
-       # If the required firewall rules on PostgreSQL are already in place, the Reader role for the Service Principal on the PostgreSQL Server is enough.
-       # Otherwise contributor role is required to dynamically allow-list the GitHub Runner IP address.
-       # But specify individual items for whole string, as of https://github.com/Azure/postgresql/issues/26.
+       # Required permissions on PostgreSQL Server in Azure:
+       # - If the required firewall rules on PostgreSQL are already in place, the Reader role is enough.
+       # - Otherwise contributor role is required to dynamically allow-list the GitHub Runner IP address.
+       # 
+       # Password is expected to be in environment variable PGPASSWORD, see https://www.postgresql.org/docs/current/libpq-envars.html.
+       # Specify individual items instead of full connection string secret, as of https://github.com/Azure/postgresql/issues/26.
        with:
-         connection-string: "psql host=${{secrets.AZURE_POSTGRES_SERVER_NAME}} port=5432 dbname=${{secrets.AZURE_POSTGRES_DB_NAME}} user=${{secrets.AZURE_POSTGRES_USERNAME}} password=$PGPASSWORD sslmode=require"
+         connection-string: "psql host=${{secrets.AZURE_POSTGRES_SERVER_NAME}} port=5432 dbname=${{secrets.AZURE_POSTGRES_DB_NAME}} user=${{secrets.AZURE_POSTGRES_USERNAME}} sslmode=require"
          server-name: ${{secrets.AZURE_POSTGRES_SERVER_NAME}}
          plsql-file: sql_files/*.sql
