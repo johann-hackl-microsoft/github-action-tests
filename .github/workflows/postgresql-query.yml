@@ -29,7 +29,7 @@ jobs:
        # Otherwise contributor role is required to dynamically allow-list the GitHub Runner IP address.
        # But specify individual items for whole string, as of https://github.com/Azure/postgresql/issues/26.
        with:
-         # connection-string: "psql host=${{secrets.AZURE_POSTGRES_SERVER_NAME}} port=5342 dbname=${{secrets.AZURE_POSTGRES_DB_NAME}} user=${{secrets.AZURE_POSTGRES_USERNAME}} password=$PGPASSWORD sslmode=require"
-         connection-string: "psql host=${{secrets.AZURE_POSTGRES_SERVER_NAME}} port=5342 dbname=${{secrets.AZURE_POSTGRES_DB_NAME}} user=${{secrets.AZURE_POSTGRES_USERNAME}} password=${{secrets.AZURE_POSTGRES_PASSWORD}} sslmode=require"
+         # connection-string: "psql host=${{secrets.AZURE_POSTGRES_SERVER_NAME}} port=5432 dbname=${{secrets.AZURE_POSTGRES_DB_NAME}} user=${{secrets.AZURE_POSTGRES_USERNAME}} password=$PGPASSWORD sslmode=require"
+         connection-string: "psql host=${{secrets.AZURE_POSTGRES_SERVER_NAME}} port=5432 dbname=${{secrets.AZURE_POSTGRES_DB_NAME}} user=${{secrets.AZURE_POSTGRES_USERNAME}} password=${{secrets.AZURE_POSTGRES_PASSWORD}} sslmode=require"
          server-name: ${{secrets.AZURE_POSTGRES_SERVER_NAME}}
          plsql-file: sql_files/*.sql
