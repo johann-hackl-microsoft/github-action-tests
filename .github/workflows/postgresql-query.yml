@@ -8,16 +8,26 @@ jobs:
     steps:
      - uses: actions/checkout@v2.3.2
 
-     - uses: Azure/azure-resource-login-action@v1.0.0
-       # Get PostgreSQL token for a Service Principal which is not necessarily part of the subscription itself.
-       # see https://github.com/Azure/azure-resource-login-action
-       # depending on https://github.com/Azure/login
+     - uses: azure/login@v2
+       # Connect to Azure without subscription context
+       # see https://github.com/Azure/login
        with:
          allow-no-subscriptions: true
          creds: ${{secrets.AZURE_CREDENTIALS}}
          resource-url: https://ossrdbms-aad.database.windows.net
-         
-     - uses: azure/postgresql@v1
+
+     - name: get-postgresql-user-token
+       uses: azure/cli@v2
+       # Get PostgreSQL token for a Service Principal which is not necessarily part of the subscription itself.
+       # Store it as PGPASSWORD to be used for postgresql connections.
+       # see https://github.com/marketplace/actions/azure-cli-action
+       with:
+         inlineScript: |
+           echo "PGPASSWORD=$(az account get-access-token --resource https://ossrdbms-aad.database.windows.net --query accessToken --output tsv)" >> $GITHUB_ENV
+
+     - name: execute-postgresql-scripts
+       uses: azure/postgresql@v1
+       # Execute scripts
        # see https://github.com/marketplace/actions/azure-postgresql-action
        # server-name only contains a label, but actual connection is stored in secret for connection string
        with:
