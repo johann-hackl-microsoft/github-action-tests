@@ -1,1 +1,1 @@
-SELECT STATUS = 'Hello World!';
+SELECT 'Hello World' AS status;
