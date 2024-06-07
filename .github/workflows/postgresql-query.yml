@@ -7,10 +7,11 @@ jobs:
     steps:
      - uses: actions/checkout@v2.3.2
 
-     - uses: Azure/login@v1
-       # see https://github.com/Azure/login
+     - uses: Azure/azure-resource-login-action@v1.0.0
+       # see https://github.com/Azure/azure-resource-login-action
        with:
          creds: ${{secrets.AZURE_CREDENTIALS}}
+         resource-url: "https://management.core.windows.net/"
          
      - uses: azure/postgresql@v1
        # see https://github.com/marketplace/actions/azure-postgresql-action
