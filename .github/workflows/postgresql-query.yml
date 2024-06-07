@@ -1,15 +1,19 @@
 on: workflow_dispatch
 
 jobs:
-  build:
+  execute-sql:
     runs-on: ubuntu-latest
+    environment: dev
     
     steps:
      - uses: actions/checkout@v2.3.2
 
      - uses: Azure/azure-resource-login-action@v1.0.0
+       # Get PostgreSQL token for a Service Principal which is not necessarily part of the subscription itself.
        # see https://github.com/Azure/azure-resource-login-action
+       # depending on https://github.com/Azure/login
        with:
+         allow-no-subscriptions: true
          creds: ${{secrets.AZURE_CREDENTIALS}}
          resource-url: https://ossrdbms-aad.database.windows.net
          
